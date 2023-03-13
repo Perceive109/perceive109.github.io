@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Zijian Liu"><title>算法笔记：Yolo · 刘子健的个人主页</title><meta name="description" content="YOLO算法：
+
+研究首先对获取到的图像进行归一化处理，然后将训练图片送入
+
+YOLOv5模型进行训练
+
+Yolo算法主要是分为训练部分和检测部分。
+
+训练部分：
+
+图片、预测框、标签、置信度；（其信息是相对于整张图片而言）
+
+图像和标签的处理，首先将源图像分割为 n x n的矩阵，然后根据目标的中"><meta name="keywords" content="Blog,博客,Hexo"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.webp"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/insight.css"><link rel="stylesheet" href="/css/search.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.4.2"></head><body><div class="page-top animated fadeInDown"><div class="nav"><li> <a href="/">首页</a></li><li> <a href="/archives">目录</a></li><li> <a href="/tags">分类</a></li></div><div class="information"><div class="nav_right_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li><li><a class="fa fa-search" onclick="openWindow();"></a></li></div><div class="avatar"><img src="/images/logo.webp"></div></div></div><div class="sidebar animated fadeInDown"><div class="sidebar-top"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:220px;" alt="favicon"><h3 title=""><a href="/">刘子健的个人主页</a></h3><div class="description"><p>Good Things Take Time！</p></div></div><ul class="social-links"><li><a href="https://github.com/Perceive109"><i class="fa fa-github"></i></a></li><li><a href="mailto:Perceive109@163.com"><i class="fa fa-envelope"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.zhihu.com/people/dong-cha-32"><i class="fa fa-mortar-board"></i></a></li></ul></div></div><div class="footer"><div class="p"> <span> 2023圆梦上大 </span><i class="fa fa-star"></i><span> Zijian Liu</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/zh-cn/" target="_blank">Hexo </a><span> & </span><span>Anatolo </span></div><div class="beian"></div></div></div><div class="main"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>算法笔记：Yolo</a></h3></div><div class="post-content"><p><ul>
+<li><p>YOLO算法：</p>
+<ul>
+<li><p>研究首先对获取到的图像进行归一化处理，然后将训练图片送入</p>
+</li>
+<li><p>YOLOv5模型进行训练</p>
+</li>
+<li><p>Yolo算法主要是分为训练部分和检测部分。</p>
+</li>
+<li><p>训练部分：</p>
+<ul>
+<li><p>图片、预测框、标签、置信度；（其信息是相对于整张图片而言）</p>
+</li>
+<li><p>图像和标签的处理，首先将源图像分割为 n x n的矩阵，然后根据目标的中心点位置对被分割的格子进行信息分配。最终每个格子都会得到一个向量。</p>
+</li>
+</ul>
+</li>
+<li><p>检测部分：</p>
+<ul>
+<li>非极大值抑制：首先找到若干预测的框框内概率最大的框，然后判断与其他框的交并比（IOU）是否大于一个阈值（比如0.5），筛选掉与该物品无关的框，保留最终的框。</li>
+</ul>
+</li>
+<li><p>最新成果：Yolo v8（ultralytics）</p>
+</li>
+</ul>
+</li>
+<li><p>Yolo算法：笔记2</p>
+<ul>
+<li><p>该研究首先对获取到的图像进行归一化处理，然后将训练图片送入YOLOv5模型进行训练，得到最佳的网络权重数据，再对测试图片进行预测分析，检测流程如图1所示。实验结果表明:所提算法在检测速度和准确性方面均优于上述学者所提算法，证明了方法的有效性和实用性。</p>
+</li>
+<li><p>In-put、Backbone、Neck和Prediction。</p>
+</li>
+<li><p><strong>Input 输入端：</strong>数据增强、图片尺寸处理、自适应锚框计算</p>
+<ul>
+<li><p>网络模型在基础锚框的基础上训练得到预测框，并和真实框进行比较（IOU），根据差值反向更新， 迭代调整网络模型参数。</p>
+</li>
+<li><p>使用labelimg软件进行目标标注【标注软件】</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Backbone 主干网络：</strong>Focus结构与CSP结构</p>
+</li>
+<li><p><strong>Neck网络：</strong>FPN+PAN结构</p>
+<ul>
+<li><p>FPN：自上而 下的，利用上采样的方式对信息进行传递融合，获得预测的特征图。</p>
+</li>
+<li><p>PAN：自底向上的特征金字塔。</p>
+</li>
+<li><p>Prediction 预测层：GIOU_Loss作为损失函数，有效解决了边界框不重合时问题。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>YOLO算法：硕士论文笔记：</p>
+<ul>
+<li><p>【序言】<br>首先目标检测算法可分为两阶段算法和一阶段算法。两阶段算法基于提议的候选区域，先提取目标的候选框，再基于候选框二次修正得到分类和回归的结果；一阶段算法基于边界框回归，在产生边界框的同时进行回归和分类。<br>常见的两阶段算法有：、SPPNet、Fast R-CNN、Faster R-CNN算法<br>常见的一阶段算法：SSD和YOLO系列算法；</p>
+</li>
+<li><p>【R-CNN算法 区域卷积神经网络】<br><strong>R-CNN算法：</strong>首先，采用“选择性搜索[40]”算法产生若干个可能包含物体的区域；其次，利用卷积神经网络（如AlexNet[27]）在选取的区域上进行特征提取；接着使用支持向量机（SVM）[29]分类器进行分类；最后采用边界框回归的方式进行准确的定位。 <strong>Fast R-CNN算法</strong>：本质上来说，Fast R-CNN不再像R-CNN那样对每一个提议区域分别卷积，而是直接对整 张图像做卷积操作，并利用ROI池化及映射关系得到统一大小的特征，这样就减 少了大量的重复计算</p>
+</li>
+<li><p><strong>YOLO：</strong></p>
+</li>
+<li><p>将输入图像分成S×S个网格单元如果某类物体的中心点落在了7×7个网格单元中的某个时，那么该网格将负责预测这类物体。每一个网格单元产生B个矩形框（YOLOv1取B&#x3D;2），每个矩形框预测4个位置信息值（物体中心点的坐标x, y及框的长宽w, h）和1个置 信度值c。置信度c的计算公式如公式(2.1)所示：</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://vipkshttps3.wiz.cn/editor/36fec677-5110-4918-b904-5dc39e4c235c/5d174362-53df-485e-bbc8-6f1b1e671fe0/resources/sYKmgvPrxKBMMF2yYAlWi-j_QIAW2mEyho9-aMqfNEQ.png?token=W.kqSQJ4mtbm7SpCRNT7mok_e9obWbypeRCdZDU7YRmmhHdeQWwISA0oPoJLT0XFw" alt="img"></p>
+<p>- </p>
+<ul>
+<li><p>其中，𝑃𝑟(𝑜𝑏𝑗𝑒𝑐𝑡)的值取0或1，即当物体的中心落在网格单元内，则置信度值为 真实框与预测框之间的IoU值；而物体中心不在该网格时，则置信度为0。</p>
+</li>
+<li><p>最后根据之前步骤，预测7×7×2&#x3D;98个目标窗口，然后根据阈值（通常取0.2） 去除可能性比较低的目标窗口，再经过非极大值抑制（NMS）去除冗余窗口即可。</p>
+</li>
+<li><p>特征金字塔网络 FPN：<br>在以往的目标检测（如Faster R-CNN）过程中，无 论是区域提议网络（RPN）还是感兴趣的区域（ROI），基本都是作用于网络的最后一层。</p>
+<p>FPN（Feature Pyramid Network）是YOLO算法中一种用于多尺度目标检测的技术，它通过构建特征金字塔来提高检测精度。<br> 在YOLO算法中，特征提取网络通常使用卷积神经网络（CNN）来提取图像特征。这些特征图的分辨率会随着网络深度的增加而逐渐降低。但是，低分辨率的特征图包含了大量的语义信息，而高分辨率的特征图包含了更多的细节信息。因此，如何同时利用这些不同分辨率的特征图来提高目标检测精度就成为了一个挑战。<br> FPN通过构建特征金字塔来解决这个问题。具体来说，它通过在不同的特征图之间添加上采样和下采样模块来实现特征金字塔的构建。上采样模块可以将低分辨率的特征图放大到与高分辨率的特征图相同的尺寸，而下采样模块则可以将高分辨率的特征图降低到与低分辨率的特征图相同的尺寸。这样，不同分辨率的特征图就可以被有效地整合到一个金字塔中，从而提高目标检测的精度。<br> 在YOLO算法中，FPN技术通常用于检测小目标或者在图像中存在尺度变化的情况下，可以提高目标检测的精度。</p>
+</li>
+<li><p>路径聚合网络（PANet）</p>
+<p> PAN（Path Aggregation Network）是YOLOv3算法中一种用于多尺度目标检测的技术，它通过特征金字塔和特征融合来提高检测精度。<br> 在YOLOv3算法中，PAN技术用于处理不同尺度的特征图，使得算法可以检测不同大小的目标。PAN网络由两部分组成：特征金字塔和特征融合。特征金字塔是一种类似于FPN的技术，它通过在不同分辨率的特征图之间进行上下采样，构建出一个多尺度的特征金字塔。而特征融合则是将不同分辨率的特征图进行融合，得到一个更加具有丰富语义信息的特征图。<br> 具体来说，在PAN网络中，特征金字塔由一个主干网络和多个特征提取分支组成。主干网络通常使用深度残差网络（ResNet）或者密集连接卷积网络（DenseNet）来提取特征。而特征提取分支则是由多个卷积层和上下采样模块组成，用于生成不同分辨率的特征图。在特征融合阶段，PAN网络使用一种路径聚合的方法来将不同分辨率的特征图融合起来。具体来说，它将不同分辨率的特征图按照尺寸进行配对，然后使用一系列的卷积层来将它们融合起来。<br> 通过使用PAN技术，YOLOv3算法可以处理不同大小的目标，提高了检测精度和稳定性。</p>
+</li>
+</ul>
+</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2022-12-31</span><i class="fa fa-tag"></i><a class="tag" href="/tags/图像算法/" title="图像算法">图像算法 </a><span class="leancloud_visitors"></span><span>大约2099个字, 6分钟59秒读完</span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://github.com/Perceive109/perceive109.github.io/2022/12/31/Algorithm_1_Yolo/,刘子健的个人主页,算法笔记：Yolo,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2023/01/01/AboutMe_n_DevideLine/" title="=====分割线=====">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2022/12/30/Algorithm_2_Ants/" title="算法笔记：蚁群算法">下一篇</a></li></ul></div><script src="/js/visitors.js"></script></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script>(function(window){var INSIGHT_CONFIG={TRANSLATION:{POSTS:"文章",PAGES:"页面",CATEGORIES:"分类",TAGS:"标签",UNTITLED:"(无标题)",},CONTENT_URL:"/content.json",};window.INSIGHT_CONFIG=INSIGHT_CONFIG})(window);</script><script src="/js/insight.js" defer></script><div class="searchbox ins-search"><div class="searchbox-container ins-search-container"><div class="searchbox-input-wrapper"><input class="searchbox-input ins-search-input" type="text" placeholder="想要查找什么..."><span class="searchbox-close"><a class="fa fa-times-circle" onclick="closeWindow();"></a></span></div><div class="searchbox-result-wrapper ins-section-wrapper"><div class="ins-section-container"><p>Seraching...</p></div></div></div></div></body></html>
